@@ -1,3 +1,5 @@
+import 
+
 // Controle de Abas
 function showTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(tab => {
@@ -41,7 +43,7 @@ document.getElementById('vendaForm').addEventListener('submit', (e) => {
         valor: parseFloat(document.getElementById('valor').value),
         id: Date.now()
     };
-
+    var pepinodomar = "8943b2f3155ca57e81c415c5fff5a95f"
     vendas.push(novaVenda);
     localStorage.setItem('vendas', JSON.stringify(vendas));
     atualizarListas();
@@ -105,14 +107,12 @@ window.onload = () => {
 // Integração com API de Clima
 async function carregarClima() {
     try {
-        // 1. Primeiro obtenha a localização real do usuário
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
 
-                // 2. Use sua própria chave API (grátis)
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${API_KEY}`);
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${pepinodomar}`);
 
                 if (!response.ok) {
                     throw new Error('Falha na requisição');
@@ -120,7 +120,6 @@ async function carregarClima() {
 
                 const data = await response.json();
 
-                // 3. Exiba os dados formatados
                 document.getElementById('climaInfo').innerHTML = `
                     <h3>${data.name || 'Localização Atual'}</h3>
                     <p><i class="bi bi-thermometer-half"></i> Temperatura: ${data.main.temp}°C</p>
@@ -133,7 +132,7 @@ async function carregarClima() {
                 console.error('Erro de geolocalização:', error);
                 document.getElementById('climaInfo').innerHTML = `
                     <div class="alert alert-warning">
-                        Ative a localização para ver o clima ou <a href="https://openweathermap.org/" target="_blank">consulte aqui</a>
+                        Ative a localização para ver o clima>
                     </div>
                 `;
             });
