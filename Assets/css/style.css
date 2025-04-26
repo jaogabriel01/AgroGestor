@@ -1,0 +1,47 @@
+:root {
+    --verde-agro: #4CAF50;
+    --marrom-terroso: #8D6E63;
+}
+        
+body {
+    background-image: url(/Assets/img/background-desktop3.png);
+    background-size: contain;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-agro {
+    background: linear-gradient(to right, var(--verde-agro), var(--marrom-terroso));
+    box-shadow: 0 4px 5px rgba(0,0,0,0.1);
+    
+}
+
+.nav-agro .container .h1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: bottom;
+    width: 80px;
+    margin: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 0; 
+    margin-top: 120px;
+    color: var(--verde-agro);
+}

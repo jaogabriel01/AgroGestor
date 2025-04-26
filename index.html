@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de gestão agrícola para controle de plantio, vendas e previsão do tempo">
+    <title>AgroGestor</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Assets/css/style.css">
+    <link rel="stylesheet" href="/Assets/css/responsividade.css">
+</head>
+
+<body>
+    <!-- Cabeçalho Principal -->
+    <header>
+        <nav class="navbar navbar-dark nav-agro" aria-label="Navegação principal">
+            <div class="container">
+                <h1 class="navbar-brand mb-0 h1">
+                    <span aria-hidden="true">🌱</span>
+                    <span>AgroGestor</span>
+                </h1>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container mt-4">
+        <div class="row">
+            <!-- Navegação Secundária -->
+            <nav class="col-md-3" aria-label="Navegação secundária">
+                <div class="list-group" role="tablist">
+                    <button class="list-group-item list-group-item-action active" 
+                            onclick="showTab('plantio')"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="plantio-tab">
+                        Controle de Plantio
+                    </button>
+                    <button class="list-group-item list-group-item-action" 
+                            onclick="showTab('vendas')"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="vendas-tab">
+                        Gestão de Vendas
+                    </button>
+                    <button class="list-group-item list-group-item-action" 
+                            onclick="showTab('clima')"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="clima-tab">
+                        Previsão do Tempo
+                    </button>
+                </div>
+                <section class="mt-5">
+                    <button onclick="resetarTudo()" class="btn btn-outline-danger">Resetar Tudo</button>
+                </section>
+            </nav>
+
+            <!-- Área de Conteúdo -->
+            <div class="col-md-9">
+                <!-- Seção de Plantio -->
+                <section id="plantio" class="tab-content dashboard-card" role="tabpanel" aria-labelledby="plantio-tab">
+                    <h2>Registrar Novo Plantio</h2>
+                    <form id="plantioForm" aria-label="Formulário de registro de plantio">
+                        <div class="mb-2">
+                            <label for="cultivo" class="visually-hidden">Cultura</label>
+                            <input type="text" id="cultivo" class="form-control" placeholder="Cultura" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="data" class="visually-hidden">Data</label>
+                            <input type="date" id="data" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </form>
+                    
+                    <section id="listaPlantios" class="mt-3" aria-live="polite"></section>
+                    
+                    <div class="mt-3">
+                        <button onclick="resetarLista('plantios')" class="btn btn-danger">Limpar Lista de Plantios</button>
+                    </div>
+                    
+                    <section class="mt-4">
+                        <button class="btn btn-primary" onclick="gerarRelatorioPlantio()">
+                            <span aria-hidden="true">📊</span> Gerar Relatório de Plantio
+                        </button>
+                        <div id="metricasPlantio" style="display:none" class="mt-3">
+                            <h3>Métricas de Plantio:</h3>
+                            <dl>
+                                <dt>Total de Plantios:</dt>
+                                <dd id="totalPlantios"></dd>
+                                <dt>Tipos de Cultivo:</dt>
+                                <dd id="tiposCultivo"></dd>
+                            </dl>
+                            <figure>
+                                <figcaption class="visually-hidden">Gráfico de plantios</figcaption>
+                                <canvas id="graficoPlantio" height="100" aria-label="Gráfico de plantios"></canvas>
+                            </figure>
+                        </div>
+                        <button id="fecharMetricasPlantio" onclick="fecharRelatorioPlantio()"
+                            class="btn btn-outline-secondary mt-2" style="display:none">Fechar Relatório</button>
+                    </section>
+                </section>
+
+                <!-- Seção de Vendas -->
+                <section id="vendas" class="tab-content dashboard-card" role="tabpanel" aria-labelledby="vendas-tab" style="display: none;">
+                    <h2>Últimas Vendas</h2>
+                    <form id="vendaForm" aria-label="Formulário de registro de vendas">
+                        <div class="mb-2">
+                            <label for="comprador" class="visually-hidden">Comprador</label>
+                            <input type="text" id="comprador" class="form-control" placeholder="Comprador" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="valor" class="visually-hidden">Valor</label>
+                            <input type="number" id="valor" class="form-control" placeholder="Valor R$" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Registrar Venda</button>
+                    </form>
+                    
+                    <section id="listaVendas" class="mt-3" aria-live="polite"></section>
+                    
+                    <div class="mt-3">
+                        <button onclick="resetarLista('vendas')" class="btn btn-danger">Limpar Lista de Vendas</button>
+                    </div>
+                    
+                    <section class="mt-4">
+                        <button class="btn btn-primary" onclick="gerarRelatorioVendas()">
+                            <span aria-hidden="true">📊</span> Gerar Relatório de Vendas
+                        </button>
+                        <div id="metricasVendas" style="display:none" class="mt-3">
+                            <h3>Métricas de Vendas:</h3>
+                            <dl>
+                                <dt>Total de Vendas:</dt>
+                                <dd id="totalVendas"></dd>
+                                <dt>Valor Total Vendido:</dt>
+                                <dd>R$ <span id="valorTotal"></span></dd>
+                            </dl>
+                            <figure>
+                                <figcaption class="visually-hidden">Gráfico de vendas</figcaption>
+                                <canvas id="graficoVendas" height="100" aria-label="Gráfico de vendas"></canvas>
+                            </figure>
+                        </div>
+                        <button id="fecharMetricasVendas" onclick="fecharRelatorioVendas()"
+                            class="btn btn-outline-secondary mt-2" style="display:none">Fechar Relatório</button>
+                    </section>
+                </section>
+
+                <!-- Seção de Clima -->
+                <section id="clima" class="tab-content dashboard-card" role="tabpanel" aria-labelledby="clima-tab" style="display: none;">
+                    <h2>Condições Climáticas</h2>
+                    <div id="climaInfo" class="text-center" aria-live="polite"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-3">
+        <p>By: <a href="https://github.com/jaogabriel01" target="_blank" rel="noopener noreferrer">Gabs</a></p>
+    </footer>
+
+    <script src="/Assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>
