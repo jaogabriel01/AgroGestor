@@ -1,5 +1,3 @@
-import 
-
 // Controle de Abas
 function showTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(tab => {
@@ -43,7 +41,7 @@ document.getElementById('vendaForm').addEventListener('submit', (e) => {
         valor: parseFloat(document.getElementById('valor').value),
         id: Date.now()
     };
-    var pepinodomar = "8943b2f3155ca57e81c415c5fff5a95f"
+
     vendas.push(novaVenda);
     localStorage.setItem('vendas', JSON.stringify(vendas));
     atualizarListas();
@@ -112,7 +110,8 @@ async function carregarClima() {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
 
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${pepinodomar}`);
+
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=8943b2f3155ca57e81c415c5fff5a95f`);
 
                 if (!response.ok) {
                     throw new Error('Falha na requisição');
@@ -132,7 +131,7 @@ async function carregarClima() {
                 console.error('Erro de geolocalização:', error);
                 document.getElementById('climaInfo').innerHTML = `
                     <div class="alert alert-warning">
-                        Ative a localização para ver o clima>
+                        Ative a localização para ver o clima ou <a href="https://openweathermap.org/" target="_blank">consulte aqui</a>
                     </div>
                 `;
             });
